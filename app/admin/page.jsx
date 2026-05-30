@@ -21,13 +21,13 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
 }
 
-function StatCard({ label, value, icon: Icon, color, href, loading }) {
+function StatCard({ label, value, icon: Icon, colorClass, href, loading }) {
   return (
     <motion.div variants={item}>
       <Link href={href} className="block group">
-        <div className="relative rounded-2xl border border-white/8 bg-white/[0.03] p-5 overflow-hidden hover:border-white/14 hover:bg-white/[0.05] transition-all duration-200">
-          {/* Subtle color glow in corner */}
-          <div className={`absolute -top-6 -right-6 w-24 h-24 rounded-full blur-2xl opacity-20 ${color}`} />
+        <div className="relative rounded-2xl border border-white/8 bg-white/[0.03] p-5 overflow-hidden hover:border-white/14 hover:bg-white/[0.05] transition-colors duration-200">
+          {/* Corner accent — no blur, no filter compositing */}
+          <div className={`absolute top-0 right-0 w-20 h-20 rounded-bl-3xl opacity-10 ${colorClass}`} />
 
           <div className="flex items-start justify-between gap-3">
             <div>
@@ -40,12 +40,12 @@ function StatCard({ label, value, icon: Icon, color, href, loading }) {
                 <p className="text-3xl font-bold text-white">{value ?? '—'}</p>
               )}
             </div>
-            <div className={`p-2.5 rounded-xl bg-white/5 border border-white/8 group-hover:scale-105 transition-transform`}>
+            <div className="p-2.5 rounded-xl bg-white/5 border border-white/8 group-hover:opacity-70 transition-opacity duration-200">
               <Icon className="w-5 h-5 text-slate-400" />
             </div>
           </div>
 
-          <div className="flex items-center gap-1 mt-4 text-xs text-slate-600 group-hover:text-slate-400 transition-colors">
+          <div className="flex items-center gap-1 mt-4 text-xs text-slate-600 group-hover:text-slate-400 transition-colors duration-200">
             <span>View all</span>
             <ArrowRight className="w-3 h-3" />
           </div>
@@ -55,13 +55,12 @@ function StatCard({ label, value, icon: Icon, color, href, loading }) {
   )
 }
 
-function QuickActionCard({ label, description, href, icon: Icon, gradient }) {
+function QuickActionCard({ label, description, href, icon: Icon }) {
   return (
     <motion.div variants={item}>
       <Link href={href} className="block group">
-        <div className="relative rounded-2xl border border-white/8 bg-white/[0.03] p-5 overflow-hidden hover:border-white/14 transition-all duration-200">
-          <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity ${gradient}`} />
-          <div className="relative z-10 flex items-center gap-3">
+        <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5 hover:border-white/14 hover:bg-white/[0.05] transition-colors duration-200">
+          <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-white/8">
               <Icon className="w-5 h-5 text-white" />
             </div>
@@ -69,7 +68,7 @@ function QuickActionCard({ label, description, href, icon: Icon, gradient }) {
               <p className="text-sm font-semibold text-white">{label}</p>
               <p className="text-xs text-slate-500 mt-0.5">{description}</p>
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-600 ml-auto group-hover:text-slate-300 transition-colors" />
+            <ArrowRight className="w-4 h-4 text-slate-600 ml-auto group-hover:text-slate-300 transition-colors duration-200" />
           </div>
         </div>
       </Link>
@@ -137,7 +136,7 @@ export default function DashboardPage() {
             label="Total Segments"
             value={segmentCount}
             icon={Layers}
-            color="bg-emerald-500"
+            colorClass="bg-emerald-500"
             href="/admin/segments"
             loading={loadingSegments}
           />
@@ -145,7 +144,7 @@ export default function DashboardPage() {
             label="Total Players"
             value={playerCount}
             icon={Users}
-            color="bg-cyan-500"
+            colorClass="bg-cyan-500"
             href="/admin/spin-players"
             loading={loadingPlayers}
           />
@@ -153,7 +152,7 @@ export default function DashboardPage() {
             label="Total Results"
             value={resultCount}
             icon={Trophy}
-            color="bg-amber-500"
+            colorClass="bg-amber-500"
             href="/admin/spin-results"
             loading={loadingResults}
           />
@@ -170,7 +169,7 @@ export default function DashboardPage() {
             label="Levels Players"
             value={levelsPlayerCount}
             icon={Gamepad2}
-            color="bg-violet-500"
+            colorClass="bg-violet-500"
             href="/admin/levels-players"
             loading={loadingLevels}
           />
@@ -204,28 +203,24 @@ export default function DashboardPage() {
             description="Add, edit or delete wheel segments"
             href="/admin/segments"
             icon={Layers}
-            gradient="bg-gradient-to-r from-emerald-500/8 to-transparent"
           />
           <QuickActionCard
             label="View Players"
             description="Browse all spin participants"
             href="/admin/spin-players"
             icon={Users}
-            gradient="bg-gradient-to-r from-cyan-500/8 to-transparent"
           />
           <QuickActionCard
             label="Spin Results"
             description="See all prizes awarded"
             href="/admin/spin-results"
             icon={Trophy}
-            gradient="bg-gradient-to-r from-amber-500/8 to-transparent"
           />
           <QuickActionCard
             label="Levels Players"
             description="Browse all levels game participants"
             href="/admin/levels-players"
             icon={Gamepad2}
-            gradient="bg-gradient-to-r from-violet-500/8 to-transparent"
           />
         </div>
       </div>
