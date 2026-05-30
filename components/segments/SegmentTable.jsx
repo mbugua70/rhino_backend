@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Table,
@@ -11,11 +10,10 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { Pencil, Trash2, Package, Layers, RefreshCw } from 'lucide-react'
+import { Pencil, Trash2, Package, Layers } from 'lucide-react'
 import { useToggleWinnable } from '@/hooks/useSegments'
 
 function ColorDot({ color, label }) {
@@ -214,43 +212,31 @@ export default function SegmentTable({
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="w-8 h-8 text-slate-500 hover:text-cyan-400 hover:bg-cyan-500/10"
-                            onClick={() => onUpdateQty(seg)}
-                          >
-                            <Package className="w-3.5 h-3.5" />
-                          </Button>
+                        <TooltipTrigger
+                          onClick={() => onUpdateQty(seg)}
+                          className="inline-flex w-8 h-8 items-center justify-center rounded-md text-slate-500 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors"
+                        >
+                          <Package className="w-3.5 h-3.5" />
                         </TooltipTrigger>
                         <TooltipContent className="text-xs">Update quantity</TooltipContent>
                       </Tooltip>
 
                       <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="w-8 h-8 text-slate-500 hover:text-emerald-400 hover:bg-emerald-500/10"
-                            onClick={() => onEdit(seg)}
-                          >
-                            <Pencil className="w-3.5 h-3.5" />
-                          </Button>
+                        <TooltipTrigger
+                          onClick={() => onEdit(seg)}
+                          className="inline-flex w-8 h-8 items-center justify-center rounded-md text-slate-500 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
                         </TooltipTrigger>
                         <TooltipContent className="text-xs">Edit segment</TooltipContent>
                       </Tooltip>
 
                       <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="w-8 h-8 text-slate-500 hover:text-red-400 hover:bg-red-500/10"
-                            onClick={() => onDelete(seg)}
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </Button>
+                        <TooltipTrigger
+                          onClick={() => onDelete(seg)}
+                          className="inline-flex w-8 h-8 items-center justify-center rounded-md text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
                         </TooltipTrigger>
                         <TooltipContent className="text-xs">Delete segment</TooltipContent>
                       </Tooltip>
