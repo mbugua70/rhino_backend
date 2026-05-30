@@ -11,6 +11,7 @@ const routeLabels = {
   '/admin/segments': 'Segments',
   '/admin/spin-players': 'Spin Players',
   '/admin/spin-results': 'Spin Results',
+  '/admin/levels-players': 'Levels Players',
 }
 
 function Breadcrumb() {
@@ -30,7 +31,7 @@ export default function AdminTopbar({ onMenuClick, admin }) {
   const initials = admin?.name ? admin.name.slice(0, 2).toUpperCase() : 'AD'
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 md:px-6 border-b border-white/6 bg-[#080f1e]/80 backdrop-blur-md">
+    <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 md:px-6 border-b border-white/6 bg-[#080f1e]">
       {/* Left: hamburger + breadcrumb */}
       <div className="flex items-center gap-3">
         <Button

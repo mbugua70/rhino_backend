@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion } from 'framer-motion'
 import {
   LayoutDashboard,
   Layers,
@@ -34,22 +33,16 @@ function NavItem({ item, onClick }) {
 
   return (
     <Link href={item.href} onClick={onClick} className="block">
-      <motion.div
-        whileHover={{ x: 2 }}
-        transition={{ duration: 0.15 }}
+      <div
         className={cn(
-          'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative',
+          'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors duration-200 group relative',
           isActive
             ? 'bg-emerald-500/15 text-emerald-400'
             : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
         )}
       >
         {isActive && (
-          <motion.div
-            layoutId="sidebar-active"
-            className="absolute inset-0 rounded-xl bg-emerald-500/10 border border-emerald-500/20"
-            transition={{ duration: 0.2 }}
-          />
+          <div className="absolute inset-0 rounded-xl bg-emerald-500/10 border border-emerald-500/20" />
         )}
         <Icon
           className={cn(
@@ -62,7 +55,7 @@ function NavItem({ item, onClick }) {
         {isActive && (
           <ChevronRight className="w-3.5 h-3.5 ml-auto text-emerald-500/60 relative z-10" />
         )}
-      </motion.div>
+      </div>
     </Link>
   )
 }
@@ -79,7 +72,7 @@ export default function AdminSidebar({ admin, onNavClick }) {
       {/* Logo */}
       <div className="px-4 py-5">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+          <div className="w-9 h-9 rounded-xl bg-linear-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shrink-0">
             <Zap className="w-5 h-5 text-white" />
           </div>
           <div>

@@ -78,7 +78,7 @@ export default function LevelsPlayersPage() {
             <button
               key={String(f.value)}
               onClick={() => handleFilterChange(f.value)}
-              className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-150 ${
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors duration-150 ${
                 isActive === f.value
                   ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
                   : 'text-slate-500 hover:text-slate-300 hover:bg-white/5 border border-transparent'
