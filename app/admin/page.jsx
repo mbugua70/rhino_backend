@@ -1,11 +1,12 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Layers, Users, Trophy, TrendingUp, ArrowRight, Zap } from 'lucide-react'
+import { Layers, Users, Trophy, TrendingUp, ArrowRight, Zap, Gamepad2 } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from '@/hooks/useAuth'
 import { useSegments } from '@/hooks/useSegments'
 import { useSpinPlayers, useSpinResults } from '@/hooks/useSpinReports'
+import { useLevelsPlayers } from '@/hooks/useLevelsReports'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -81,6 +82,7 @@ export default function DashboardPage() {
   const { data: segments, isLoading: loadingSegments } = useSegments()
   const { data: playersData, isLoading: loadingPlayers } = useSpinPlayers({ page: 1, limit: 1 })
   const { data: resultsData, isLoading: loadingResults } = useSpinResults({ page: 1, limit: 1 })
+  const { data: levelsData, isLoading: loadingLevels } = useLevelsPlayers({ page: 1, limit: 1 })
 
   const adminName = session?.admin?.name || 'Admin'
   const hour = new Date().getHours()
@@ -90,6 +92,7 @@ export default function DashboardPage() {
   const segmentCount = Array.isArray(segments) ? segments.length : '—'
   const playerCount = playersData?.total ?? '—'
   const resultCount = resultsData?.total ?? '—'
+  const levelsPlayerCount = levelsData?.total ?? '—'
 
   const activeSegments = Array.isArray(segments)
     ? segments.filter((s) => s.is_active).length
@@ -157,6 +160,23 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* Levels Game stats */}
+      <div>
+        <motion.p variants={item} className="text-xs font-semibold uppercase tracking-widest text-slate-600 mb-3">
+          Levels Game
+        </motion.p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <StatCard
+            label="Levels Players"
+            value={levelsPlayerCount}
+            icon={Gamepad2}
+            color="bg-violet-500"
+            href="/admin/levels-players"
+            loading={loadingLevels}
+          />
+        </div>
+      </div>
+
       {/* Active segments callout */}
       {activeSegments !== null && (
         <motion.div variants={item}>
@@ -199,6 +219,13 @@ export default function DashboardPage() {
             href="/admin/spin-results"
             icon={Trophy}
             gradient="bg-gradient-to-r from-amber-500/8 to-transparent"
+          />
+          <QuickActionCard
+            label="Levels Players"
+            description="Browse all levels game participants"
+            href="/admin/levels-players"
+            icon={Gamepad2}
+            gradient="bg-gradient-to-r from-violet-500/8 to-transparent"
           />
         </div>
       </div>

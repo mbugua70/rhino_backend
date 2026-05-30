@@ -8,6 +8,7 @@ import {
   Layers,
   Users,
   Trophy,
+  Gamepad2,
   Zap,
   LogOut,
   ChevronRight,
@@ -23,6 +24,7 @@ const navItems = [
   { label: 'Segments', href: '/admin/segments', icon: Layers },
   { label: 'Spin Players', href: '/admin/spin-players', icon: Users },
   { label: 'Spin Results', href: '/admin/spin-results', icon: Trophy },
+  { label: 'Levels Players', href: '/admin/levels-players', icon: Gamepad2 },
 ]
 
 function NavItem({ item, onClick }) {
