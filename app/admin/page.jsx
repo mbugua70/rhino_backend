@@ -17,15 +17,15 @@ const container = {
   show: { opacity: 1, transition: { staggerChildren: 0.08 } },
 }
 const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.3, ease: 'easeOut' } },
 }
 
 function StatCard({ label, value, icon: Icon, colorClass, href, loading }) {
   return (
     <motion.div variants={item}>
       <Link href={href} className="block group">
-        <div className="relative rounded-2xl border border-white/8 bg-white/[0.03] p-5 overflow-hidden hover:border-white/14 hover:bg-white/[0.05] transition-colors duration-200">
+        <div className="relative rounded-2xl border border-white/8 bg-white/5 p-5 overflow-hidden hover:border-white/9 hover:bg-white/[0.07] transition-colors duration-200">
           {/* Corner accent — no blur, no filter compositing */}
           <div className={`absolute top-0 right-0 w-20 h-20 rounded-bl-3xl opacity-10 ${colorClass}`} />
 
@@ -57,22 +57,20 @@ function StatCard({ label, value, icon: Icon, colorClass, href, loading }) {
 
 function QuickActionCard({ label, description, href, icon: Icon }) {
   return (
-    <motion.div variants={item}>
-      <Link href={href} className="block group">
-        <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5 hover:border-white/14 hover:bg-white/[0.05] transition-colors duration-200">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-white/8">
-              <Icon className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-white">{label}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{description}</p>
-            </div>
-            <ArrowRight className="w-4 h-4 text-slate-600 ml-auto group-hover:text-slate-300 transition-colors duration-200" />
+    <Link href={href} className="block group">
+      <div className="rounded-2xl border border-white/8 bg-white/5 p-5 hover:border-white/14 hover:bg-white/[0.07] transition-colors duration-200">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-white/8">
+            <Icon className="w-5 h-5 text-white" />
           </div>
+          <div>
+            <p className="text-sm font-semibold text-white">{label}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{description}</p>
+          </div>
+          <ArrowRight className="w-4 h-4 text-slate-600 ml-auto group-hover:text-slate-300 transition-colors duration-200" />
         </div>
-      </Link>
-    </motion.div>
+      </div>
+    </Link>
   )
 }
 
