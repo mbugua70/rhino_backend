@@ -48,7 +48,7 @@ function StatCard({ label, value, icon: Icon, accentClass, href, loading }) {
 function QuickActionCard({ label, description, href, icon: Icon }) {
   return (
     <Link href={href} className="block group">
-      <div className="rounded-2xl border border-white/8 bg-white/5 p-5 hover:bg-white/[0.07] transition-colors duration-200">
+      <div className="rounded-2xl border border-white/8 bg-white/5 p-5 hover:bg-white/[0.07]">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-white/8">
             <Icon className="w-5 h-5 text-white" />
@@ -57,7 +57,7 @@ function QuickActionCard({ label, description, href, icon: Icon }) {
             <p className="text-sm font-semibold text-white">{label}</p>
             <p className="text-xs text-slate-500 mt-0.5">{description}</p>
           </div>
-          <ArrowRight className="w-4 h-4 text-slate-600 ml-auto group-hover:text-slate-300 transition-colors duration-200" />
+          <ArrowRight className="w-4 h-4 text-slate-600 ml-auto group-hover:text-slate-300" />
         </div>
       </div>
     </Link>
@@ -109,7 +109,7 @@ export default function DashboardPage() {
         <p className="text-xs font-semibold uppercase tracking-widest text-slate-600 mb-3">
           Overview
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <StatCard
             label="Total Segments"
             value={segmentCount}
@@ -134,15 +134,6 @@ export default function DashboardPage() {
             href="/admin/spin-results"
             loading={loadingResults}
           />
-        </div>
-      </div>
-
-      {/* Levels Game stats */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-slate-600 mb-3">
-          Levels Game
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <StatCard
             label="Levels Players"
             value={levelsPlayerCount}
