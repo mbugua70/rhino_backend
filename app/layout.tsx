@@ -18,6 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Spin The Wheel Admin",
   description: "Admin dashboard for Spin The Wheel game management",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({
