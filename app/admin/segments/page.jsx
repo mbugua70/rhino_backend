@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
 import { Plus, RefreshCw, Search, Filter } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,12 +18,6 @@ import SegmentTable from '@/components/segments/SegmentTable'
 import SegmentDrawer from '@/components/segments/SegmentDrawer'
 import DeleteSegmentDialog from '@/components/segments/DeleteSegmentDialog'
 import QuantityUpdateDialog from '@/components/segments/QuantityUpdateDialog'
-
-const container = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.06 } },
-}
-const item = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } }
 
 export default function SegmentsPage() {
   const qc = useQueryClient()
@@ -75,9 +68,9 @@ export default function SegmentsPage() {
   }
 
   return (
-    <motion.div variants={container} initial="hidden" animate="show" className="max-w-7xl mx-auto space-y-5">
+    <div className="max-w-7xl mx-auto space-y-5">
       {/* Header */}
-      <motion.div variants={item} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl font-bold text-white">Segments</h1>
           <p className="text-slate-500 text-sm mt-0.5">
@@ -102,11 +95,11 @@ export default function SegmentsPage() {
             Add Segment
           </Button>
         </div>
-      </motion.div>
+      </div>
 
       {/* Filters */}
-      <motion.div variants={item}>
-        <div className="flex flex-col sm:flex-row gap-3 p-4 rounded-xl border border-white/8 bg-white/[0.02]">
+      <div>
+        <div className="flex flex-col sm:flex-row gap-3 p-4 rounded-xl border border-white/8 bg-white/2">
           {/* Search */}
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
@@ -154,11 +147,11 @@ export default function SegmentsPage() {
             </Badge>
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* Error state */}
       {error && !isLoading && (
-        <motion.div variants={item}>
+        <div>
           <div className="p-4 rounded-xl border border-red-500/25 bg-red-500/8 text-red-400 text-sm">
             Failed to load segments.{' '}
             <button
@@ -168,11 +161,11 @@ export default function SegmentsPage() {
               Retry
             </button>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {/* Table */}
-      <motion.div variants={item}>
+      <div>
         <SegmentTable
           segments={segments}
           isLoading={isLoading}
@@ -180,12 +173,12 @@ export default function SegmentsPage() {
           onDelete={setDeleteTarget}
           onUpdateQty={setQtyTarget}
         />
-      </motion.div>
+      </div>
 
       {/* Modals */}
       <SegmentDrawer open={drawerOpen} onClose={closeDrawer} editData={editData} />
       <DeleteSegmentDialog segment={deleteTarget} onClose={() => setDeleteTarget(null)} />
       <QuantityUpdateDialog segment={qtyTarget} onClose={() => setQtyTarget(null)} />
-    </motion.div>
+    </div>
   )
 }
