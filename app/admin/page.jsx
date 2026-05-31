@@ -51,8 +51,7 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-5">
-      {/* Greeting */}
-      <div className="pt-1">
+      <div>
         <h1 className="text-xl font-bold text-white">
           {greeting}, <span className="text-emerald-400">{adminName}</span> 👋
         </h1>
@@ -61,39 +60,13 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <StatCard
-          label="Segments"
-          value={segmentCount}
-          icon={Layers}
-          href="/admin/segments"
-          loading={loadingSegments}
-        />
-        <StatCard
-          label="Spin Players"
-          value={playerCount}
-          icon={Users}
-          href="/admin/spin-players"
-          loading={loadingPlayers}
-        />
-        <StatCard
-          label="Spin Results"
-          value={resultCount}
-          icon={Trophy}
-          href="/admin/spin-results"
-          loading={loadingResults}
-        />
-        <StatCard
-          label="Levels Players"
-          value={levelsPlayerCount}
-          icon={Gamepad2}
-          href="/admin/levels-players"
-          loading={loadingLevels}
-        />
+        <StatCard label="Segments" value={segmentCount} icon={Layers} href="/admin/segments" loading={loadingSegments} />
+        <StatCard label="Spin Players" value={playerCount} icon={Users} href="/admin/spin-players" loading={loadingPlayers} />
+        <StatCard label="Spin Results" value={resultCount} icon={Trophy} href="/admin/spin-results" loading={loadingResults} />
+        <StatCard label="Levels Players" value={levelsPlayerCount} icon={Gamepad2} href="/admin/levels-players" loading={loadingLevels} />
       </div>
 
-      {/* Active segments callout */}
       {activeSegments !== null && (
         <div className="flex items-center gap-3 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
           <TrendingUp className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -101,12 +74,7 @@ export default function DashboardPage() {
             <span className="font-semibold text-emerald-400">{activeSegments}</span> of{' '}
             <span className="font-semibold text-white">{segmentCount}</span> segments are currently active.
           </p>
-          <Button
-            asChild
-            size="sm"
-            variant="ghost"
-            className="ml-auto shrink-0 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 text-xs"
-          >
+          <Button asChild size="sm" variant="ghost" className="ml-auto shrink-0 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 text-xs">
             <Link href="/admin/segments">Manage</Link>
           </Button>
         </div>
