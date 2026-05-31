@@ -10,16 +10,20 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { format } from 'date-fns'
 
+// Solid pre-computed colours — no alpha blending, no per-tile compositing cost
+// bg-white/5 on #050d1b  → #111926
+// border-white/8 on #050d1b → #19202d
+
 function StatCard({ label, value, icon: Icon, href, loading }) {
   return (
     <Link href={href} className="block">
-      <div className="rounded-xl border border-white/8 bg-white/5 p-4">
+      <div className="rounded-xl border border-[#19202d] bg-[#111926] p-4">
         <div className="flex items-center justify-between mb-3">
           <Icon className="w-4 h-4 text-slate-500" />
           <ArrowRight className="w-3.5 h-3.5 text-slate-600" />
         </div>
         {loading ? (
-          <Skeleton className="h-7 w-12 bg-white/8 mb-1" />
+          <Skeleton className="h-7 w-12 bg-[#19202d] mb-1" />
         ) : (
           <p className="text-2xl font-bold text-white mb-1">{value ?? '—'}</p>
         )}
@@ -67,14 +71,15 @@ export default function DashboardPage() {
         <StatCard label="Levels Players" value={levelsPlayerCount} icon={Gamepad2} href="/admin/levels-players" loading={loadingLevels} />
       </div>
 
+      {/* Solid colours: bg-emerald-500/5 → #071c14, border-emerald-500/20 → #0d3d26 */}
       {activeSegments !== null && (
-        <div className="flex items-center gap-3 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
+        <div className="flex items-center gap-3 p-4 rounded-xl border border-[#0d3d26] bg-[#071c14]">
           <TrendingUp className="w-4 h-4 text-emerald-400 shrink-0" />
           <p className="text-sm text-slate-300">
             <span className="font-semibold text-emerald-400">{activeSegments}</span> of{' '}
             <span className="font-semibold text-white">{segmentCount}</span> segments are currently active.
           </p>
-          <Button asChild size="sm" variant="ghost" className="ml-auto shrink-0 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 text-xs">
+          <Button asChild size="sm" variant="ghost" className="ml-auto shrink-0 text-emerald-400 hover:text-emerald-300 text-xs">
             <Link href="/admin/segments">Manage</Link>
           </Button>
         </div>

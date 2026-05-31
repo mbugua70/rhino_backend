@@ -31,7 +31,7 @@ export default function AdminTopbar({ onMenuClick, admin }) {
   const initials = admin?.name ? admin.name.slice(0, 2).toUpperCase() : 'AD'
 
   return (
-    <header className="flex items-center justify-between h-14 px-4 md:px-6 border-b border-white/6 bg-[#080f1e]">
+    <header className="flex items-center justify-between h-14 px-4 md:px-6 border-b border-[#141b2b] bg-[#080f1e]">
       {/* Left: hamburger + breadcrumb */}
       <div className="flex items-center gap-3">
         <Button
