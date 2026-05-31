@@ -1,6 +1,6 @@
 'use client'
 
-import { Layers, Users, Trophy, TrendingUp, ArrowRight, Zap, Gamepad2 } from 'lucide-react'
+import { Layers, Users, Trophy, TrendingUp, ArrowRight, Gamepad2 } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from '@/hooks/useAuth'
 import { useSegments } from '@/hooks/useSegments'
@@ -11,11 +11,13 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 
-function StatCard({ label, value, icon: Icon, colorClass, href, loading }) {
+// accentClass must already include alpha, e.g. "bg-emerald-500/10"
+// — never use CSS opacity property here; alpha in the color = zero GPU tile cost
+function StatCard({ label, value, icon: Icon, accentClass, href, loading }) {
   return (
     <Link href={href} className="block group">
-      <div className="relative rounded-2xl border border-white/8 bg-white/5 p-5 overflow-hidden hover:border-white/9 hover:bg-white/[0.07] transition-colors duration-200">
-        <div className={`absolute top-0 right-0 w-20 h-20 rounded-bl-3xl opacity-10 ${colorClass}`} />
+      <div className="relative rounded-2xl border border-white/8 bg-white/5 p-5 hover:bg-white/[0.07] transition-colors duration-200">
+        <div className={`absolute top-0 right-0 w-20 h-20 rounded-bl-3xl ${accentClass}`} />
 
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -28,7 +30,8 @@ function StatCard({ label, value, icon: Icon, colorClass, href, loading }) {
               <p className="text-3xl font-bold text-white">{value ?? '—'}</p>
             )}
           </div>
-          <div className="p-2.5 rounded-xl bg-white/5 border border-white/8 group-hover:opacity-70 transition-opacity duration-200">
+          {/* No transition-opacity — opacity animation pre-allocates a GPU tile */}
+          <div className="p-2.5 rounded-xl bg-white/5 border border-white/8">
             <Icon className="w-5 h-5 text-slate-400" />
           </div>
         </div>
@@ -45,7 +48,7 @@ function StatCard({ label, value, icon: Icon, colorClass, href, loading }) {
 function QuickActionCard({ label, description, href, icon: Icon }) {
   return (
     <Link href={href} className="block group">
-      <div className="rounded-2xl border border-white/8 bg-white/5 p-5 hover:border-white/[0.14] hover:bg-white/[0.07] transition-colors duration-200">
+      <div className="rounded-2xl border border-white/8 bg-white/5 p-5 hover:bg-white/[0.07] transition-colors duration-200">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-white/8">
             <Icon className="w-5 h-5 text-white" />
@@ -83,28 +86,22 @@ export default function DashboardPage() {
     : null
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-300">
-      {/* Welcome banner */}
-      <div className="relative rounded-2xl overflow-hidden border border-white/8 bg-gradient-to-br from-emerald-500/10 via-white/[0.02] to-cyan-500/5 p-6 md:p-8">
-        <div className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-emerald-500/8 to-transparent" />
-        <div className="absolute top-4 right-8 opacity-10">
-          <Zap className="w-24 h-24 text-emerald-400" />
+    <div className="max-w-6xl mx-auto space-y-6">
+      {/* Welcome banner — no overflow-hidden, no opacity property, no absolute children with opacity */}
+      <div className="relative rounded-2xl border border-white/8 bg-[#0a1f18] p-6 md:p-8">
+        <div className="flex items-center gap-2 mb-1">
+          <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-[10px] font-semibold uppercase tracking-wider">
+            Live
+          </Badge>
+          <span className="text-xs text-slate-500">{today}</span>
         </div>
-        <div className="relative">
-          <div className="flex items-center gap-2 mb-1">
-            <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-[10px] font-semibold uppercase tracking-wider">
-              Live
-            </Badge>
-            <span className="text-xs text-slate-500">{today}</span>
-          </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white mt-2">
-            {greeting},{' '}
-            <span className="gradient-text">{adminName}</span> 👋
-          </h1>
-          <p className="text-slate-400 text-sm mt-1.5">
-            Here&apos;s what&apos;s happening with your Spin The Wheel game today.
-          </p>
-        </div>
+        <h1 className="text-2xl md:text-3xl font-bold text-white mt-2">
+          {greeting},{' '}
+          <span className="gradient-text">{adminName}</span> 👋
+        </h1>
+        <p className="text-slate-400 text-sm mt-1.5">
+          Here&apos;s what&apos;s happening with your Spin The Wheel game today.
+        </p>
       </div>
 
       {/* Stats */}
@@ -117,7 +114,7 @@ export default function DashboardPage() {
             label="Total Segments"
             value={segmentCount}
             icon={Layers}
-            colorClass="bg-emerald-500"
+            accentClass="bg-emerald-500/10"
             href="/admin/segments"
             loading={loadingSegments}
           />
@@ -125,7 +122,7 @@ export default function DashboardPage() {
             label="Total Players"
             value={playerCount}
             icon={Users}
-            colorClass="bg-cyan-500"
+            accentClass="bg-cyan-500/10"
             href="/admin/spin-players"
             loading={loadingPlayers}
           />
@@ -133,7 +130,7 @@ export default function DashboardPage() {
             label="Total Results"
             value={resultCount}
             icon={Trophy}
-            colorClass="bg-amber-500"
+            accentClass="bg-amber-500/10"
             href="/admin/spin-results"
             loading={loadingResults}
           />
@@ -150,7 +147,7 @@ export default function DashboardPage() {
             label="Levels Players"
             value={levelsPlayerCount}
             icon={Gamepad2}
-            colorClass="bg-violet-500"
+            accentClass="bg-violet-500/10"
             href="/admin/levels-players"
             loading={loadingLevels}
           />
