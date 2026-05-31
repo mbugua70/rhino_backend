@@ -18,7 +18,7 @@ function LoadingShell() {
           ))}
         </div>
       </div>
-      <div className="lg:pl-64 pt-14">
+      <div className="lg:pl-64">
         <div className="p-6 space-y-4">
           <Skeleton className="h-10 w-48 rounded-xl bg-white/3" />
           <div className="grid grid-cols-2 gap-3">
@@ -54,8 +54,8 @@ export default function AdminLayout({ children }) {
         admin={admin}
       />
 
-      {/* Main area — offset for fixed sidebar and topbar */}
-      <div className="lg:pl-64 pt-14">
+      {/* Main area */}
+      <div className="lg:pl-64">
         <AdminTopbar onMenuClick={() => setMobileOpen(true)} admin={admin} />
         <main>
           <div className="p-4 md:p-6">{children}</div>
