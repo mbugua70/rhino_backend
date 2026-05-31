@@ -9,8 +9,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 function LoadingShell() {
   return (
-    <div className="flex min-h-screen bg-[#050d1b]">
-      <div className="hidden lg:flex flex-col w-64 shrink-0 sticky top-0 h-screen border-r border-white/6 bg-[#0b1628] p-4 gap-4">
+    <div className="min-h-screen bg-[#050d1b]">
+      <div className="hidden lg:flex flex-col fixed top-0 left-0 bottom-0 w-64 border-r border-white/6 bg-[#0b1628] p-4 gap-4">
         <Skeleton className="h-9 w-9 rounded-xl bg-white/5" />
         <div className="space-y-2 mt-4">
           {[...Array(4)].map((_, i) => (
@@ -18,13 +18,12 @@ function LoadingShell() {
           ))}
         </div>
       </div>
-      <div className="flex-1 flex flex-col">
-        <Skeleton className="h-14 w-full bg-white/3" />
-        <div className="flex-1 p-6 space-y-4">
-          <Skeleton className="h-32 w-full rounded-2xl bg-white/3" />
-          <div className="grid grid-cols-2 gap-4">
+      <div className="lg:pl-64 pt-14">
+        <div className="p-6 space-y-4">
+          <Skeleton className="h-10 w-48 rounded-xl bg-white/3" />
+          <div className="grid grid-cols-2 gap-3">
             {[...Array(4)].map((_, i) => (
-              <Skeleton key={i} className="h-24 rounded-2xl bg-white/3" />
+              <Skeleton key={i} className="h-24 rounded-xl bg-white/3" />
             ))}
           </div>
         </div>
@@ -42,9 +41,9 @@ export default function AdminLayout({ children }) {
   const admin = session?.admin
 
   return (
-    <div className="flex min-h-screen bg-[#050d1b]">
-      {/* Desktop sidebar — sticky so it stays in view on window scroll */}
-      <aside className="hidden lg:flex flex-col w-64 shrink-0 sticky top-0 h-screen border-r border-white/6 bg-[#0b1628]">
+    <div className="min-h-screen bg-[#050d1b]">
+      {/* Desktop sidebar — fixed */}
+      <aside className="hidden lg:flex flex-col fixed top-0 left-0 bottom-0 w-64 border-r border-white/6 bg-[#0b1628] z-20">
         <AdminSidebar admin={admin} />
       </aside>
 
@@ -55,10 +54,10 @@ export default function AdminLayout({ children }) {
         admin={admin}
       />
 
-      {/* Main area — no overflow-y-auto, page scrolls at window level */}
-      <div className="flex flex-col flex-1 min-w-0">
+      {/* Main area — offset for fixed sidebar and topbar */}
+      <div className="lg:pl-64 pt-14">
         <AdminTopbar onMenuClick={() => setMobileOpen(true)} admin={admin} />
-        <main className="flex-1">
+        <main>
           <div className="p-4 md:p-6">{children}</div>
         </main>
       </div>
