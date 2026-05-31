@@ -48,16 +48,16 @@ function StatCard({ label, value, icon: Icon, accentClass, href, loading }) {
 function QuickActionCard({ label, description, href, icon: Icon }) {
   return (
     <Link href={href} className="block group">
-      <div className="rounded-2xl border border-white/8 bg-white/5 p-5 hover:bg-white/[0.07]">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-white/8">
-            <Icon className="w-5 h-5 text-white" />
+      <div className="rounded-2xl border border-white/8 bg-white/5 p-4 hover:bg-white/[0.07]">
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 rounded-lg bg-white/8 shrink-0">
+            <Icon className="w-4 h-4 text-white" />
           </div>
-          <div>
-            <p className="text-sm font-semibold text-white">{label}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{description}</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold text-white truncate">{label}</p>
+            <p className="text-[10px] text-slate-500 mt-0.5 hidden sm:block">{description}</p>
           </div>
-          <ArrowRight className="w-4 h-4 text-slate-600 ml-auto group-hover:text-slate-300" />
+          <ArrowRight className="w-3.5 h-3.5 text-slate-500 shrink-0 group-hover:text-slate-300" />
         </div>
       </div>
     </Link>
@@ -145,26 +145,12 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Active segments callout */}
-      {activeSegments !== null && (
-        <div className="flex items-center gap-3 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
-          <TrendingUp className="w-4 h-4 text-emerald-400 shrink-0" />
-          <p className="text-sm text-slate-300">
-            <span className="font-semibold text-emerald-400">{activeSegments}</span> of{' '}
-            <span className="font-semibold text-white">{segmentCount}</span> segments are currently active on the wheel.
-          </p>
-          <Button asChild size="sm" variant="ghost" className="ml-auto shrink-0 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 text-xs">
-            <Link href="/admin/segments">Manage</Link>
-          </Button>
-        </div>
-      )}
-
       {/* Quick actions */}
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-slate-600 mb-3">
           Quick Actions
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <QuickActionCard
             label="Manage Segments"
             description="Add, edit or delete wheel segments"
@@ -191,6 +177,20 @@ export default function DashboardPage() {
           />
         </div>
       </div>
+
+      {/* Active segments callout */}
+      {activeSegments !== null && (
+        <div className="flex items-center gap-3 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
+          <TrendingUp className="w-4 h-4 text-emerald-400 shrink-0" />
+          <p className="text-sm text-slate-300">
+            <span className="font-semibold text-emerald-400">{activeSegments}</span> of{' '}
+            <span className="font-semibold text-white">{segmentCount}</span> segments are currently active on the wheel.
+          </p>
+          <Button asChild size="sm" variant="ghost" className="ml-auto shrink-0 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 text-xs">
+            <Link href="/admin/segments">Manage</Link>
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
