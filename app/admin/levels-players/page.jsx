@@ -1,12 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { Gamepad2, RefreshCw } from 'lucide-react'
+import { Gamepad2, RefreshCw, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useLevelsPlayers } from '@/hooks/useLevelsReports'
 import { useQueryClient } from '@tanstack/react-query'
 import LevelsPlayersTable from '@/components/reports/LevelsPlayersTable'
+import { getLevelsPlayers } from '@/services/reportService'
+import { downloadCSV } from '@/lib/utils'
+import { format } from 'date-fns'
 
 const STATUS_FILTERS = [
   { label: 'All', value: undefined },
@@ -14,9 +17,15 @@ const STATUS_FILTERS = [
   { label: 'Inactive', value: 'false' },
 ]
 
+function formatDate(val) {
+  if (!val) return ''
+  try { return format(new Date(val), 'yyyy-MM-dd HH:mm') } catch { return '' }
+}
+
 export default function LevelsPlayersPage() {
   const [page, setPage] = useState(1)
   const [isActive, setIsActive] = useState(undefined)
+  const [isExporting, setIsExporting] = useState(false)
   const limit = 10
   const qc = useQueryClient()
 
@@ -25,6 +34,25 @@ export default function LevelsPlayersPage() {
   function handleFilterChange(value) {
     setIsActive(value)
     setPage(1)
+  }
+
+  async function handleExport() {
+    setIsExporting(true)
+    try {
+      const all = await getLevelsPlayers({ page: 1, limit: 10000, isActive })
+      const rows = (all.players ?? []).map((p) => ({
+        Name: p.name ?? '',
+        Code: p.player_code ?? '',
+        Level: p.currentLevel ?? '',
+        'Completed Levels': Array.isArray(p.completedLevels) ? p.completedLevels.length : '',
+        Score: p.totalScore ?? '',
+        Status: p.isActive ? 'Active' : 'Inactive',
+        Registered: formatDate(p.createdAt),
+      }))
+      downloadCSV(rows, `levels-players-${Date.now()}.csv`)
+    } finally {
+      setIsExporting(false)
+    }
   }
 
   return (
@@ -51,6 +79,16 @@ export default function LevelsPlayersPage() {
               {data.total} total
             </Badge>
           )}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-9 px-3 text-slate-400 hover:text-white hover:bg-white/8 gap-1.5"
+            onClick={handleExport}
+            disabled={isExporting || isLoading}
+          >
+            <Download className={`w-4 h-4 ${isExporting ? 'animate-bounce' : ''}`} />
+            <span className="text-xs">{isExporting ? 'Exporting…' : 'Export'}</span>
+          </Button>
           <Button
             variant="ghost"
             size="icon"

@@ -1,19 +1,45 @@
 'use client'
 
 import { useState } from 'react'
-import { Users, RefreshCw } from 'lucide-react'
+import { Users, RefreshCw, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useSpinPlayers } from '@/hooks/useSpinReports'
 import { useQueryClient } from '@tanstack/react-query'
 import SpinPlayersTable from '@/components/reports/SpinPlayersTable'
+import { getSpinPlayers } from '@/services/reportService'
+import { downloadCSV } from '@/lib/utils'
+import { format } from 'date-fns'
+
+function formatDate(val) {
+  if (!val) return ''
+  try { return format(new Date(val), 'yyyy-MM-dd HH:mm') } catch { return '' }
+}
 
 export default function SpinPlayersPage() {
   const [page, setPage] = useState(1)
+  const [isExporting, setIsExporting] = useState(false)
   const limit = 10
   const qc = useQueryClient()
 
   const { data, isLoading, isRefetching } = useSpinPlayers({ page, limit })
+
+  async function handleExport() {
+    setIsExporting(true)
+    try {
+      const all = await getSpinPlayers({ page: 1, limit: 10000 })
+      const rows = (all.players ?? []).map((p) => ({
+        Player: p.player_name ?? '',
+        Spun: p.has_spun ? 'Yes' : 'No',
+        Prize: p.prize_name ?? '',
+        'Spun At': formatDate(p.spun_at),
+        Registered: formatDate(p.createdAt),
+      }))
+      downloadCSV(rows, `spin-players-${Date.now()}.csv`)
+    } finally {
+      setIsExporting(false)
+    }
+  }
 
   return (
     <div className="max-w-7xl mx-auto space-y-5">
@@ -35,6 +61,16 @@ export default function SpinPlayersPage() {
               {data.total} total
             </Badge>
           )}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-9 px-3 text-slate-400 hover:text-white hover:bg-white/8 gap-1.5"
+            onClick={handleExport}
+            disabled={isExporting || isLoading}
+          >
+            <Download className={`w-4 h-4 ${isExporting ? 'animate-bounce' : ''}`} />
+            <span className="text-xs">{isExporting ? 'Exporting…' : 'Export'}</span>
+          </Button>
           <Button
             variant="ghost"
             size="icon"
