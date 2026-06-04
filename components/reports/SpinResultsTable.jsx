@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Trophy, ChevronLeft, ChevronRight, Download } from 'lucide-react'
 import { format } from 'date-fns'
-import { toast } from 'sonner'
 
 function SkeletonRows() {
   return (
@@ -79,27 +78,7 @@ function formatDate(val) {
   try { return format(new Date(val), 'MMM d, yyyy · HH:mm') } catch { return '—' }
 }
 
-function exportCSV(results) {
-  if (!results?.length) return toast.error('No data to export')
-  const headers = ['Player', 'Prize', 'Spun At', 'Created At']
-  const rows = results.map((r) => [
-    r.player_name ?? '',
-    r.prize_name ?? '',
-    r.spun_at ? format(new Date(r.spun_at), 'yyyy-MM-dd HH:mm') : '',
-    r.createdAt ? format(new Date(r.createdAt), 'yyyy-MM-dd HH:mm') : '',
-  ])
-  const csv = [headers, ...rows].map((r) => r.map((v) => `"${v}"`).join(',')).join('\n')
-  const blob = new Blob([csv], { type: 'text/csv' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `spin-results-${format(new Date(), 'yyyy-MM-dd')}.csv`
-  a.click()
-  URL.revokeObjectURL(url)
-  toast.success('CSV exported')
-}
-
-export default function SpinResultsTable({ data, isLoading, page, onPrev, onNext }) {
+export default function SpinResultsTable({ data, isLoading, page, onPrev, onNext, onExport, isExporting }) {
   const results = data?.results ?? []
   const totalPages = data?.totalPages ?? 1
 
@@ -117,10 +96,11 @@ export default function SpinResultsTable({ data, isLoading, page, onPrev, onNext
           variant="ghost"
           size="sm"
           className="text-slate-400 hover:text-white hover:bg-white/8 gap-2 text-xs h-8"
-          onClick={() => exportCSV(results)}
+          onClick={onExport}
+          disabled={isExporting || isLoading}
         >
-          <Download className="w-3.5 h-3.5" />
-          Export CSV
+          <Download className={`w-3.5 h-3.5 ${isExporting ? 'animate-bounce' : ''}`} />
+          {isExporting ? 'Exporting…' : 'Export CSV'}
         </Button>
       </div>
 

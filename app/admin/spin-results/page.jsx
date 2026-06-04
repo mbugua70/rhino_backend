@@ -7,13 +7,38 @@ import { Badge } from '@/components/ui/badge'
 import { useSpinResults } from '@/hooks/useSpinReports'
 import { useQueryClient } from '@tanstack/react-query'
 import SpinResultsTable from '@/components/reports/SpinResultsTable'
+import { getSpinResults } from '@/services/reportService'
+import { downloadCSV } from '@/lib/utils'
+import { format } from 'date-fns'
+
+function formatDate(val) {
+  if (!val) return ''
+  try { return format(new Date(val), 'yyyy-MM-dd HH:mm') } catch { return '' }
+}
 
 export default function SpinResultsPage() {
   const [page, setPage] = useState(1)
+  const [isExporting, setIsExporting] = useState(false)
   const limit = 10
   const qc = useQueryClient()
 
   const { data, isLoading, isRefetching } = useSpinResults({ page, limit })
+
+  async function handleExport() {
+    setIsExporting(true)
+    try {
+      const all = await getSpinResults({ page: 1, limit: 10000 })
+      const rows = (all.results ?? []).map((r) => ({
+        Player: r.player_name ?? '',
+        Prize: r.prize_name ?? '',
+        'Spun At': formatDate(r.spun_at),
+        Created: formatDate(r.createdAt),
+      }))
+      downloadCSV(rows, `spin-results-${Date.now()}.csv`)
+    } finally {
+      setIsExporting(false)
+    }
+  }
 
   return (
     <div className="max-w-7xl mx-auto space-y-5">
@@ -53,6 +78,8 @@ export default function SpinResultsPage() {
         page={page}
         onPrev={() => setPage((p) => Math.max(1, p - 1))}
         onNext={() => setPage((p) => p + 1)}
+        onExport={handleExport}
+        isExporting={isExporting}
       />
     </div>
   )
